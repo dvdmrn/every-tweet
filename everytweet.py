@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import itertools
 import json
 import tweepy
@@ -60,8 +62,6 @@ def loadProgress():
 
 
 print("initialized")
-print("making test tweet")
-tweet("testy mc test test")
 loadProgress()
 getCombos()
 exit()

@@ -1,2 +1,7 @@
 cred.json
 tests/
+.env
+REMEMBER.md
+*.log
+test.py
+progress.json
