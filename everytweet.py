@@ -26,6 +26,16 @@ maxChars = 280 # 250 chars is max tweet length
 chars = "abcdefghijklmnopqrstuvwxyz 0123456789!,?.$'~+&*():/#"
 # 2809 hours
 
+def sanitizeMeDaddy(s):
+    '''
+    passes leading and trailing whitespace
+    so that api calls don't go boom boom
+    s := a String
+    ''' 
+    if(s[0] == " " or s[len(s)-1] == " "):
+        return(" ")
+    else:
+        return(s)
 
 def getCombos():        
     for i in range(progress['charLen'],maxChars-1):
@@ -36,21 +46,23 @@ def getCombos():
             combos = itertools.product(chars,repeat=progress["charLen"])
             slicedCombos = itertools.islice(combos,progress["i"], None)
             for subset in slicedCombos:
-                # print(''.join(subset))
-                msg = "".join(subset)
-                print(f'iterator step: {progress["i"]}; output {msg}')
-                tweet(msg)
                 progress["i"] += 1
                 with open('progress.json','w') as outfile:
                     json.dump(progress,outfile)
-                time.sleep(3600) # sleep for 1 hour
+                msg = "".join(subset)
+                print(f'iterator step: {progress["i"]}; output {msg}')
+                msg = sanitizeMeDaddy(msg)
+                if(msg == " "):
+                    pass
+                else:
+                    tweet(msg)
+                    time.sleep(3600) # sleep for 1 hour
             progress["charLen"] += 1
             progress["i"] = 0
 
 def tweet(theTweet):
     print(f'tweeting: {theTweet}')
     api.update_status(theTweet)
-
 
 def loadProgress():
     global progress
